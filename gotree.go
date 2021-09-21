@@ -2,6 +2,7 @@
 package gotree
 
 import (
+	"sort"
 	"strings"
 )
 
@@ -24,6 +25,7 @@ type (
 		Add(text string) Tree
 		AddTree(tree Tree)
 		Items() []Tree
+		Sort()
 		Text() string
 		Print() string
 	}
@@ -55,6 +57,13 @@ func (t *tree) Add(text string) Tree {
 //AddTree adds a tree as an item
 func (t *tree) AddTree(tree Tree) {
 	t.items = append(t.items, tree)
+}
+
+//Sort sorts the tree's items (mostly to create a deterministic ordering)
+func (t *tree) Sort() {
+	sort.Slice(t.items, func(i, j int) bool {
+		return t.items[i].Text() < t.items[j].Text()
+	})
 }
 
 //Text returns the node's value
